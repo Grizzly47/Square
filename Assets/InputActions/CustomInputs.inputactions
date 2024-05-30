@@ -234,6 +234,17 @@
                 },
                 {
                     "name": "",
+                    "id": "bfc37f15-1dc1-4855-b365-d24598301be8",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9b619116-bd2b-41d5-bcc5-7a514765e19d",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
