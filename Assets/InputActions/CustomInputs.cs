@@ -268,7 +268,7 @@ public partial class @CustomInputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9b619116-bd2b-41d5-bcc5-7a514765e19d"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

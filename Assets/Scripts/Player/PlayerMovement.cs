@@ -112,7 +112,7 @@ namespace KP
             targetVelocity = moveVector * dashSpeed; // Set target velocity for dashing
 
             // Apply dash squash effect
-            targetScale = new Vector3(originalScale.x * (1 - dashSquashAmount), originalScale.y * (1 + dashSquashAmount), originalScale.z);
+            targetScale = new Vector3(originalScale.x * (1 + dashSquashAmount), originalScale.y / (1 + dashSquashAmount), originalScale.z);
             visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, targetScale, squashSmoothTime);
 
             yield return new WaitForSeconds(dashDuration);
