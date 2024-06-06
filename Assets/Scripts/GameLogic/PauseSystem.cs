@@ -10,7 +10,7 @@ namespace KP
         public static PauseSystem instance;
         private CustomInputs input = null;
         [SerializeField] GameObject pauseMenu = null;
-        bool isPaused;
+        public bool isPaused;
 
 
         private void Awake()
@@ -42,6 +42,18 @@ namespace KP
         private void OnPause(InputAction.CallbackContext context)
         {
             PauseGame();
+        }
+
+        public void OnPauseToggled()
+        {
+            if (PauseSystem.instance.isPaused)
+            {
+                input.Disable();
+            }
+            else
+            {
+                input.Enable();
+            }
         }
 
         public void PauseGame()

@@ -128,6 +128,9 @@ MonoBehaviour:
   moveSquashAmount: 0.1
   dashSquashAmount: 0.2
   squashSmoothTime: 0.1
+  trailPrefab: {fileID: 5738496433120716086, guid: 8ae798d1f522be14c9d1f16935ee2826, type: 3}
+  trailLifeTime: 1
+  trailSpawnInterval: 0.1
 --- !u!114 &5862744529842489053
 MonoBehaviour:
   m_ObjectHideFlags: 0

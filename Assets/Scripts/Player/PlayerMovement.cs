@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,9 +26,18 @@ namespace KP
         [SerializeField] float dashSquashAmount = 0.2f;
         [SerializeField] float squashSmoothTime = 0.1f;
 
+        [Header("Trail")]
+        [SerializeField] GameObject trailPrefab;
+        [SerializeField] float trailLifeTime = 1f;
+        [SerializeField] float trailSpawnInterval = 0.1f;
+        private List<GameObject> activeTrails = new List<GameObject>();
+
+
         private Transform visualTransform; // Reference to the visual child object
         private Vector3 originalScale;
         private Vector3 targetScale;
+
+        private List<Vector3> trailPositions = new List<Vector3>();
 
         private void Awake()
         {
@@ -48,10 +58,11 @@ namespace KP
 
         private void OnDisable()
         {
-            input.Disable();
             input.Player.Movement.performed -= OnMovementPerformed;
             input.Player.Movement.canceled -= OnMovementCancelled;
             input.Player.Dash.performed -= OnDashPerformed;
+
+            input.Disable();
         }
 
         private void FixedUpdate()
@@ -115,6 +126,8 @@ namespace KP
             targetScale = new Vector3(originalScale.x * (1 + dashSquashAmount), originalScale.y / (1 + dashSquashAmount), originalScale.z);
             visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, targetScale, squashSmoothTime);
 
+            CreateTrail();
+
             yield return new WaitForSeconds(dashDuration);
 
             moveSpeed = originalSpeed;
@@ -123,6 +136,12 @@ namespace KP
             // Revert to original scale
             targetScale = originalScale;
             visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, targetScale, squashSmoothTime);
+        }
+
+        private void CreateTrail()
+        {
+            GameObject trail = Instantiate(trailPrefab, transform.position, transform.rotation);
+            activeTrails.Add(trail);
         }
     }
 }
