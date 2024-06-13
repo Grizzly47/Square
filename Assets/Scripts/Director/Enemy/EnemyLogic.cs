@@ -22,6 +22,10 @@ namespace KP
                 playerHealth.Damage(damageAmount);
                 Destroy(gameObject);
             }
+            else if (collision.gameObject.CompareTag("Trail")) {
+                GameManager.instance.AddScore(10);
+                Destroy(gameObject);
+            }
             else if (collision.gameObject.CompareTag("Wall"))
             {
                 Destroy(gameObject);

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5081084851000937352}
   - component: {fileID: 2337659622601740758}
   - component: {fileID: 5862744529842489053}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -123,14 +123,11 @@ MonoBehaviour:
   moveVector: {x: 0, y: 0}
   moveSpeed: 10
   smoothTime: 0.1
-  dashSpeed: 40
+  dashSpeed: 25
   dashDuration: 0.1
   moveSquashAmount: 0.1
   dashSquashAmount: 0.2
   squashSmoothTime: 0.1
-  trailPrefab: {fileID: 5738496433120716086, guid: 8ae798d1f522be14c9d1f16935ee2826, type: 3}
-  trailLifeTime: 1
-  trailSpawnInterval: 0.1
 --- !u!114 &5862744529842489053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6539301651536489748}
   - component: {fileID: 6484377686356432855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,6 +13,22 @@ namespace KP
             StartCoroutine(FadeAndDestroy());
         }
 
+        public void Initialize(Vector3 startPosition, Vector3 endPosition)
+        {
+            // Set the trail position and rotation
+            transform.position = startPosition;
+
+            Vector2 direction = (endPosition - startPosition).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            // Calculate the distance and set the scale
+            float distance = Vector3.Distance(startPosition, endPosition);
+
+            // Adjust the local scale along the x-axis
+            transform.localScale = new Vector3(distance, transform.localScale.y, transform.localScale.z);
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Enemy"))
