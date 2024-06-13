@@ -5,7 +5,7 @@ namespace KP
 {
     public class TrailManager : MonoBehaviour
     {
-        public static TrailManager instance { get; private set; }
+        public static TrailManager instance;
 
         [Header("Trail Settings")]
         [SerializeField] private GameObject trailColliderObject;
@@ -33,16 +33,9 @@ namespace KP
             lineRenderer = GetComponent<LineRenderer>();
             edgeCollider = trailColliderObject.GetComponent<EdgeCollider2D>();
 
-            if (lineRenderer == null || edgeCollider == null)
-            {
-                Debug.LogError("LineRenderer or EdgeCollider2D not found.");
-                return;
-            }
-
             lineRenderer.positionCount = 0;
             edgeCollider.points = new Vector2[0];
 
-            // Set the width of the LineRenderer
             lineRenderer.startWidth = 0.05f;
             lineRenderer.endWidth = 0.05f;
         }
@@ -59,6 +52,7 @@ namespace KP
 
         public void AddTrailPoint(Vector3 position)
         {
+            // New Dash Starts too far away
             if (trailPositions.Count > 0 && Vector3.Distance(position, trailPositions[trailPositions.Count - 1]) > maxDistanceBetweenDashes)
             {
                 trailPositions.Clear();
@@ -67,6 +61,7 @@ namespace KP
                 edgeCollider.points = new Vector2[0];
             }
 
+            // New dash point is close enough
             if (trailPositions.Count == 0 || Vector3.Distance(position, trailPositions[trailPositions.Count - 1]) > pointRadius)
             {
                 trailPositions.Add(position);
@@ -112,15 +107,77 @@ namespace KP
 
         public void CheckForShapes()
         {
-            if (trailPositions.Count >= 3)
+            // Define the expected sides and margin for shape detection
+            int[] expectedSidesArray = new int[] { 3, 4, 5 }; // Example: triangle, square, pentagon
+            float[] angleThresholds = new float[] { 120f, 90f, 72f }; // Corresponding angle thresholds for shapes
+            float angleMargin = 15f; // Allowable margin of error in degrees
+
+            for (int j = 0; j < expectedSidesArray.Length; j++)
             {
-                float distanceToFirstPoint = Vector3.Distance(trailPositions[trailPositions.Count - 1], trailPositions[0]);
-                if (distanceToFirstPoint <= pointRadius)
+                int expectedSides = expectedSidesArray[j];
+                float idealAngle = angleThresholds[j];
+                float lowerThreshold = idealAngle - angleMargin;
+                float upperThreshold = idealAngle + angleMargin;
+
+                List<Vector3> significantPoints = GetSignificantPoints(trailPositions, lowerThreshold);
+
+                if (significantPoints.Count >= expectedSides)
                 {
-                    // Shape formed, handle shape detection logic here
-                    Debug.Log("Shape formed!");
+                    float distanceToFirstPoint = Vector3.Distance(significantPoints[significantPoints.Count - 1], significantPoints[0]);
+                    if (distanceToFirstPoint <= pointRadius)
+                    {
+                        // Shape formed, handle shape detection logic here
+                        Debug.Log("Shape formed with " + expectedSides + " sides!");
+                        GameManager.instance.SetMultiplier(expectedSides);
+                        return; // Exit once a valid shape is found
+                    }
                 }
             }
+
+            // If no shape is detected, reset the multiplier
+            GameManager.instance.SetMultiplier(1);
         }
+
+
+
+        private float GetIdealAngleForSides(int sides)
+        {
+            if (sides < 3) return 180f; // Degenerate case, not a shape
+
+            // The internal angle of a regular polygon with `sides` sides
+            return 180f - (360f / sides);
+        }
+
+
+        private List<Vector3> GetSignificantPoints(List<Vector3> points, float angleThreshold)
+        {
+            List<Vector3> significantPoints = new List<Vector3>();
+            if (points.Count < 3) return points; // Not enough points to form a shape
+
+            significantPoints.Add(points[0]); // Add the first point
+
+            for (int i = 1; i < points.Count - 1; i++)
+            {
+                Vector3 prevPoint = points[i - 1];
+                Vector3 currPoint = points[i];
+                Vector3 nextPoint = points[i + 1];
+
+                Vector3 dir1 = (currPoint - prevPoint).normalized;
+                Vector3 dir2 = (nextPoint - currPoint).normalized;
+
+                float angle = Vector3.Angle(dir1, dir2);
+
+                if (angle >= angleThreshold)
+                {
+                    significantPoints.Add(currPoint); // Add significant point
+                }
+            }
+
+            significantPoints.Add(points[points.Count - 1]); // Add the last point
+
+            return significantPoints;
+        }
+
+
     }
 }

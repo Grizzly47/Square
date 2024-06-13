@@ -15,6 +15,7 @@ namespace KP
 
         [Header("Gameplay")]
         private int score;
+        private int multiplier = 1;
 
         private void Awake()
         {
@@ -35,7 +36,7 @@ namespace KP
 
         public void AddScore(int points)
         {
-            score += points;
+            score += points*multiplier;
             Debug.Log("Score: " + score);
             UIManager.instance.UpdateScore(score);
         }
@@ -43,6 +44,16 @@ namespace KP
         public int GetScore()
         {
             return score;
+        }
+
+        public void SetMultiplier(int _newMultiplier)
+        {
+            multiplier = _newMultiplier;
+            UIManager.instance.UpdateMultilpier(multiplier);
+        }
+        public int GetMultiplier()
+        {
+            return multiplier;
         }
 
         public void LoadLevel(string levelName)

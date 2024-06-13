@@ -10,6 +10,7 @@ namespace KP
         public static UIManager instance;
 
         [SerializeField] private TMP_Text scoreText;
+        [SerializeField] private TMP_Text multiText;
 
         private void Awake()
         {
@@ -30,6 +31,14 @@ namespace KP
             if (scoreText != null)
             {
                 scoreText.text = "Score: " + score.ToString();
+            }
+        }
+
+        public void UpdateMultilpier(int multiplier)
+        {
+            if (multiText != null)
+            {
+                multiText.text = "Multiplier: " + multiplier.ToString();
             }
         }
     }

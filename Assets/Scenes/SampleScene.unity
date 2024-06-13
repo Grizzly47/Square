@@ -802,6 +802,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: -1, y: 0}
+--- !u!114 &1462387027 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8733319663600125560, guid: 52d00480a8dbd9d4fad09b8c40a8f7c7, type: 3}
+  m_PrefabInstance: {fileID: 3358005491586502629}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1625441744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,6 +1409,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7320010428670893464, guid: 023d041adfd7cf84e8404cfc9481b406, type: 3}
+      propertyPath: multiText
+      value: 
+      objectReference: {fileID: 1462387027}
     - target: {fileID: 7320010428670893464, guid: 023d041adfd7cf84e8404cfc9481b406, type: 3}
       propertyPath: scoreText
       value: 
