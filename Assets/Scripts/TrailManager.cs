@@ -38,6 +38,21 @@ namespace KP
 
             lineRenderer.startWidth = 0.05f;
             lineRenderer.endWidth = 0.05f;
+            IgnorePlayerCollision();
+        }
+
+        private void IgnorePlayerCollision()
+        {
+            int playerLayer = LayerMask.NameToLayer("Player");
+            int trailLayer = LayerMask.NameToLayer("Trail");
+
+            if (playerLayer == -1 || trailLayer == -1)
+            {
+                Debug.LogError("Layer not found! Please check layer names.");
+                return;
+            }
+
+            Physics2D.IgnoreLayerCollision(playerLayer, trailLayer, true);
         }
 
         public EdgeCollider2D GetEdgeCollider()
