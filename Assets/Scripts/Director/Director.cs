@@ -83,14 +83,15 @@ namespace KP
             if (enemyType == 0)
             {
                 // Triangle enemy movement
-                Vector2 direction = (Vector2)mainCamera.ScreenToWorldPoint(Input.mousePosition) - (Vector2)spawnPoint;
+                Transform playerTransform = GameObject.FindWithTag("Player").transform;
+                Vector2 direction = (Vector2)playerTransform.position - (Vector2)spawnPoint;
                 direction.Normalize();
 
                 EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
                 if (enemyMovement != null)
                 {
                     enemyMovement.SetDirection(direction);
-                    enemyMovement.SetSpeed(currentEnemySpeed);
+                    enemyMovement.SetSpeed(currentEnemySpeed * 3);
                 }
             }
             else

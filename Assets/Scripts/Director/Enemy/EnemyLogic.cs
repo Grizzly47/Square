@@ -8,6 +8,7 @@ namespace KP
     {
         [SerializeField] private int damageAmount = 10; // Damage amount dealt by this enemy
         private Health enemyHealth;
+        private Rigidbody2D enemyRB;
 
         private void Awake()
         {
@@ -19,6 +20,8 @@ namespace KP
             {
                 Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
             }
+
+            enemyRB.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

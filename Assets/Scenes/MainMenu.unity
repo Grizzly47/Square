@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed371d5cc0ec3464ba5d9832d2e58045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SCShader: {fileID: 0}
+  SCShader: {fileID: 4800000, guid: 4b1a7b0688399774e8c1579b026d350d, type: 3}
   EffectOpacity: 1
 --- !u!1001 &5518640853254091593
 PrefabInstance:

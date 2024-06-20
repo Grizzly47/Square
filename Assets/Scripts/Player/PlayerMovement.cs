@@ -131,26 +131,29 @@ namespace KP
             isDashing = true;
             float originalSpeed = moveSpeed;
             Vector2 initialDashDirection = moveVector.normalized;
-            moveSpeed = dashSpeed;
-            targetVelocity = moveVector * dashSpeed;
-
-            targetScale = new Vector3(originalScale.x * (1 + dashSquashAmount), originalScale.y / (1 + dashSquashAmount), originalScale.z);
-            visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, targetScale, squashSmoothTime);
-
+            float currentDashSpeed = dashSpeed; // Start from dash speed
+            float maxDashDistance = 25f; // Max distance for the dash
             Vector3 startPosition = transform.position;
             float dashTimeElapsed = 0f;
             bool shapeCompleted = false;
             float pointRadius = TrailManager.instance.GetPointRadius(); // Get pointRadius from TrailManager
 
-            while (dashTimeElapsed < dashDuration)
+            // Set initial squash and stretch
+            targetScale = new Vector3(originalScale.x * (1 + dashSquashAmount), originalScale.y / (1 + dashSquashAmount), originalScale.z);
+            visualTransform.localScale = targetScale;
+
+            // Smoothly accelerate
+            while (dashTimeElapsed < dashDuration / 2 && Vector3.Distance(startPosition, transform.position) < maxDashDistance)
             {
                 dashTimeElapsed += Time.deltaTime;
-                playerRB.velocity = initialDashDirection * dashSpeed;
+                currentDashSpeed = Mathf.Lerp(0, dashSpeed, dashTimeElapsed / (dashDuration / 2)); // Smoothly accelerate
+
+                playerRB.velocity = initialDashDirection * currentDashSpeed;
 
                 Vector3 currentPosition = transform.position;
 
                 // Raycast to detect obstacles
-                RaycastHit2D hit = Physics2D.Raycast(currentPosition, initialDashDirection, dashSpeed * Time.deltaTime);
+                RaycastHit2D hit = Physics2D.Raycast(currentPosition, initialDashDirection, currentDashSpeed * Time.deltaTime);
                 if (hit.collider != null && hit.collider.CompareTag("Wall"))
                 {
                     // Stop the dash if a wall is detected
@@ -169,11 +172,48 @@ namespace KP
                 yield return null;
             }
 
+            // Smoothly decelerate
+            while (dashTimeElapsed < dashDuration && Vector3.Distance(startPosition, transform.position) < maxDashDistance)
+            {
+                dashTimeElapsed += Time.deltaTime;
+                currentDashSpeed = Mathf.Lerp(dashSpeed, originalSpeed, (dashTimeElapsed - dashDuration / 2) / (dashDuration / 2)); // Smoothly decelerate to original speed
+
+                playerRB.velocity = initialDashDirection * currentDashSpeed;
+
+                Vector3 currentPosition = transform.position;
+
+                // Raycast to detect obstacles
+                RaycastHit2D hit = Physics2D.Raycast(currentPosition, initialDashDirection, currentDashSpeed * Time.deltaTime);
+                if (hit.collider != null && hit.collider.CompareTag("Wall"))
+                {
+                    // Stop the dash if a wall is detected
+                    break;
+                }
+
+                // Check if the player has passed the start point
+                if (!shapeCompleted && Vector3.Distance(currentPosition, startPosition) <= pointRadius)
+                {
+                    currentPosition = startPosition; // Snap to start point
+                    shapeCompleted = true;
+                }
+
+                TrailManager.instance.AddTrailPoint(currentPosition);
+
+                yield return null;
+            }
+
+            // Ensure the player continues moving at original speed
             moveSpeed = originalSpeed;
             targetVelocity = moveVector * moveSpeed;
 
-            targetScale = originalScale;
-            visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, targetScale, squashSmoothTime);
+            // Smoothly return to original scale
+            float squashTimeElapsed = 0f;
+            while (squashTimeElapsed < squashSmoothTime)
+            {
+                squashTimeElapsed += Time.deltaTime;
+                visualTransform.localScale = Vector3.Lerp(visualTransform.localScale, originalScale, squashTimeElapsed / squashSmoothTime);
+                yield return null;
+            }
 
             isDashing = false;
 

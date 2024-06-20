@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed371d5cc0ec3464ba5d9832d2e58045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SCShader: {fileID: 0}
+  SCShader: {fileID: 4800000, guid: 4b1a7b0688399774e8c1579b026d350d, type: 3}
   EffectOpacity: 1
 --- !u!1 &739005429
 GameObject:
@@ -1036,10 +1036,12 @@ MonoBehaviour:
   triangleEnemyPrefab: {fileID: 560369366925131467, guid: f0b51553565c7bf4e8580af6ba603aaa, type: 3}
   seekingEnemyPrefab: {fileID: 5326622518964622492, guid: aa3d4de057d681e45a3d3fe3999e0772, type: 3}
   warningSignalPrefab: {fileID: 7654117711007499941, guid: d1d6f454dedce044d99b6427e16bcfd8, type: 3}
-  spawnInterval: 2
+  initialSpawnInterval: 2
   warningTime: 1
-  enemiesPerWave: 5
+  initialEnemiesPerWave: 5
   waveInterval: 10
+  speedIncreasePerWave: 0.5
+  spawnIntervalDecreasePerWave: 0.1
   minX: -3.6
   maxX: 3.6
   minY: -4.1
@@ -1179,6 +1181,14 @@ PrefabInstance:
     - target: {fileID: 1420757987809588921, guid: 16a6522f8cf91c44f9ed6f370729ac53, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7808562900512833740, guid: 16a6522f8cf91c44f9ed6f370729ac53, type: 3}
+      propertyPath: shapeLifetime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7808562900512833740, guid: 16a6522f8cf91c44f9ed6f370729ac53, type: 3}
+      propertyPath: trailLifetime
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 8498715628506298138, guid: 16a6522f8cf91c44f9ed6f370729ac53, type: 3}
       propertyPath: m_Name

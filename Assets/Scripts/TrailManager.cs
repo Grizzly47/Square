@@ -147,6 +147,7 @@ namespace KP
             UpdateEdgeCollider();
         }
 
+
         private void UpdateEdgeCollider()
         {
             if (trailPoints.Count == 0)
