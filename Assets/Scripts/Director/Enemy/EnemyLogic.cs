@@ -13,6 +13,7 @@ namespace KP
         private void Awake()
         {
             enemyHealth = GetComponent<Health>();
+            enemyRB = GetComponent<Rigidbody2D>();
 
             // Ignore collisions with other enemies
             Collider2D[] colliders = GetComponents<Collider2D>();
