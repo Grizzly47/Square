@@ -11,9 +11,10 @@ namespace KP
         public static GameManager instance;
 
         [Header("UI")]
-        
+        // Your UI related variables
 
         [Header("Gameplay")]
+        [SerializeField] private GameObject playerPrefab;
         private int score;
         private int multiplier = 1;
 
@@ -32,11 +33,12 @@ namespace KP
 
         private void Start()
         {
-            score = 0;        }
+            score = 0;
+        }
 
         public void AddScore(int points)
         {
-            score += points*multiplier;
+            score += points * multiplier;
             Debug.Log("Score: " + score);
             UIManager.instance.UpdateScore(score);
         }
@@ -51,6 +53,7 @@ namespace KP
             multiplier = _newMultiplier;
             UIManager.instance.UpdateMultilpier(multiplier);
         }
+
         public int GetMultiplier()
         {
             return multiplier;
@@ -58,7 +61,38 @@ namespace KP
 
         public void LoadLevel(string levelName)
         {
-            SceneManager.LoadScene(levelName);
+            StartCoroutine(LoadLevelCoroutine(levelName));
+        }
+
+        private IEnumerator LoadLevelCoroutine(string levelName)
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(levelName);
+
+            // Wait until the scene is loaded
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+
+            Time.timeScale = 1;
+
+            if (levelName == "SampleScene")
+            {
+                GameObject player = GameObject.FindWithTag("Player");
+                if (player == null)
+                {
+                    Debug.Log("Instantiating Player");
+                    player = Instantiate(playerPrefab);
+                }
+                OnPlayerInstantiated(player);
+            }
+
+            // Initialize the local scene manager after the scene is loaded
+            LocalSceneManager localSceneManager = FindObjectOfType<LocalSceneManager>();
+            if (localSceneManager != null)
+            {
+                localSceneManager.InitializeScene();
+            }
         }
 
         public void ReloadCurrentLevel()
@@ -69,6 +103,21 @@ namespace KP
         public void QuitGame()
         {
             Application.Quit();
+        }
+
+        private void OnPlayerInstantiated(GameObject player)
+        {
+            Health playerHealth = player.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                playerHealth.Died.AddListener(OnPlayerDied);
+            }
+        }
+
+        private void OnPlayerDied()
+        {
+            Debug.Log("Player died!");
+            GameManager.instance.LoadLevel("GameOver");
         }
     }
 }

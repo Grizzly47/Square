@@ -36,6 +36,7 @@ namespace KP
         {
             input = new CustomInputs();
             playerRB = GetComponent<Rigidbody2D>();
+            playerRB.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             playerCollider = GetComponent<BoxCollider2D>();
             visualTransform = transform.Find("Sprite");
             originalScale = visualTransform.localScale;
@@ -147,6 +148,14 @@ namespace KP
                 playerRB.velocity = initialDashDirection * dashSpeed;
 
                 Vector3 currentPosition = transform.position;
+
+                // Raycast to detect obstacles
+                RaycastHit2D hit = Physics2D.Raycast(currentPosition, initialDashDirection, dashSpeed * Time.deltaTime);
+                if (hit.collider != null && hit.collider.CompareTag("Wall"))
+                {
+                    // Stop the dash if a wall is detected
+                    break;
+                }
 
                 // Check if the player has passed the start point
                 if (!shapeCompleted && Vector3.Distance(currentPosition, startPosition) <= pointRadius)

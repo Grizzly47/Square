@@ -19,10 +19,15 @@ namespace KP
             if (collision.gameObject.CompareTag("Player"))
             {
                 Health playerHealth = collision.gameObject.GetComponent<Health>();
-                playerHealth.Damage(damageAmount);
+                if (playerHealth != null)
+                {
+                    playerHealth.Damage(damageAmount);
+                    Debug.Log("Damage dealt");
+                }
                 Destroy(gameObject);
             }
-            else if (collision.gameObject.CompareTag("Trail")) {
+            else if (collision.gameObject.CompareTag("Trail"))
+            {
                 GameManager.instance.AddScore(10);
                 Destroy(gameObject);
             }
@@ -33,3 +38,4 @@ namespace KP
         }
     }
 }
+

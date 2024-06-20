@@ -18,7 +18,6 @@ namespace KP
             if (instance == null)
             {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {
