@@ -94,7 +94,13 @@ namespace KP
 
         private void UpdateTrail()
         {
-            if (trailPoints.Count == 0) return;
+            if (trailPoints.Count == 0)
+            {
+                // Clear the collider points if there are no trail points
+                edgeCollider.points = new Vector2[0];
+                lineRenderer.positionCount = 0;
+                return;
+            }
 
             for (int i = trailPoints.Count - 1; i >= 0; i--)
             {
@@ -103,6 +109,14 @@ namespace KP
                 {
                     trailPoints.RemoveAt(i);
                 }
+            }
+
+            if (trailPoints.Count == 0)
+            {
+                // Clear the collider points if all trail points have expired
+                edgeCollider.points = new Vector2[0];
+                lineRenderer.positionCount = 0;
+                return;
             }
 
             lineRenderer.positionCount = trailPoints.Count;
@@ -133,9 +147,14 @@ namespace KP
             UpdateEdgeCollider();
         }
 
-
         private void UpdateEdgeCollider()
         {
+            if (trailPoints.Count == 0)
+            {
+                edgeCollider.points = new Vector2[0];
+                return;
+            }
+
             Vector2[] colliderPoints = new Vector2[trailPoints.Count];
             for (int i = 0; i < trailPoints.Count; i++)
             {

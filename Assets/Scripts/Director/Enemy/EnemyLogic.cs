@@ -12,6 +12,13 @@ namespace KP
         private void Awake()
         {
             enemyHealth = GetComponent<Health>();
+
+            // Ignore collisions with other enemies
+            Collider2D[] colliders = GetComponents<Collider2D>();
+            foreach (Collider2D col in colliders)
+            {
+                Physics2D.IgnoreLayerCollision(gameObject.layer, gameObject.layer);
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -38,4 +45,3 @@ namespace KP
         }
     }
 }
-

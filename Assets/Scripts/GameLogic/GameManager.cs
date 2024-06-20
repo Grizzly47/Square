@@ -78,6 +78,8 @@ namespace KP
 
             if (levelName == "SampleScene")
             {
+                score = 0;
+                multiplier = 1;
                 GameObject player = GameObject.FindWithTag("Player");
                 if (player == null)
                 {

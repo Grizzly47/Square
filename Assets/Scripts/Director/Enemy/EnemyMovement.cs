@@ -5,7 +5,7 @@ namespace KP
     public class EnemyMovement : MonoBehaviour
     {
         [SerializeField] private float speed = 5f; // Speed of enemy movement
-        [SerializeField] private Vector2 direction = new Vector2(1, 1); // Direction of movement (45 degrees)
+        private Vector2 direction = new Vector2(1, 1); // Direction of movement (45 degrees)
         private Rigidbody2D rb;
 
         private void Start()
@@ -24,6 +24,17 @@ namespace KP
             direction = newDirection.normalized;
 
             // Update the velocity with the new direction
+            if (rb != null)
+            {
+                rb.velocity = direction * speed;
+            }
+        }
+
+        public void SetSpeed(float newSpeed)
+        {
+            speed = newSpeed;
+
+            // Update the velocity with the new speed
             if (rb != null)
             {
                 rb.velocity = direction * speed;
