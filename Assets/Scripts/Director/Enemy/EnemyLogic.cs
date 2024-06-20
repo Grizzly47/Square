@@ -32,6 +32,7 @@ namespace KP
                 Health playerHealth = collision.gameObject.GetComponent<Health>();
                 if (playerHealth != null)
                 {
+                    SFXManager.instance.PlayEnemyHitSFX();
                     playerHealth.Damage(damageAmount);
                     Debug.Log("Damage dealt");
                 }

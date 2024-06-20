@@ -119,6 +119,7 @@ namespace KP
         private void OnPlayerDied()
         {
             Debug.Log("Player died!");
+            SFXManager.instance.PlayGameOverSFX();
             GameManager.instance.LoadLevel("GameOver");
         }
     }

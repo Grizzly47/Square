@@ -102,20 +102,14 @@ namespace KP
 
         private void OnMovementPerformed(InputAction.CallbackContext value)
         {
-            //if (!isDashing)
-            //{
                 moveVector = value.ReadValue<Vector2>();
                 targetVelocity = moveVector * moveSpeed;
-            //}
         }
 
         private void OnMovementCancelled(InputAction.CallbackContext value)
         {
-            //if (!isDashing)
-            //{
                 moveVector = Vector2.zero;
                 targetVelocity = Vector2.zero;
-            //}
         }
 
         private void OnDashPerformed(InputAction.CallbackContext context)
